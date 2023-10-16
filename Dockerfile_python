@@ -1,0 +1,17 @@
+# Imagem de referêcia pyrhon 3.11
+FROM python:3.11-alpine3.18
+
+# Diretório padrão de trabalho
+WORKDIR /app
+
+# Copia arquivo de requisitos para o diretório de trabalho
+COPY requirements.txt ./
+
+# Instalação dos pacotes requeridos
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Definição de variáveis de ambiente necessárias
+ENV APPNAME UserImagemSystem
+
+# Executando aplicação ao inicializar o container
+CMD [ "ls", "-lah" ]
