@@ -5,7 +5,7 @@ FROM python:3.11
 WORKDIR /app
 
 # Copia arquivo de requisitos para o diretório de trabalho
-COPY requirements.txt ./
+COPY ./ ./
 
 # Instalação dos pacotes requeridos
 RUN pip install --no-cache-dir -r requirements.txt
@@ -14,4 +14,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 #ENV KEY Value
 
 # Executando aplicação ao inicializar o container
-CMD [ "sleep", "1d" ]
+CMD [ "uvicorn", "main:app" ]
