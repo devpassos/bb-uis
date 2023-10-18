@@ -12,8 +12,8 @@ Below, are some high level definitions of what should be created:
 Create an API to manage Users Images
 
 ### Endpoints:
-
-- /add-user
+## Criado corpo das rotas
+- /add-user -
   - request : receives a User Name
   - response: returns the new User ID.
 
@@ -33,14 +33,15 @@ Create an API to manage Users Images
   - request : receives a User ID
   - response: return a list of user's images ID and (Base 64 Format) on maximum size of 100x100, and preserving aspect ratio.
 
-- /update-user-image         
+- /update-user-image
   - request : receives a User ID, an Image ID, and a new image (Base 64 Format)
   - response : no response body needed
 
-- /delete-user-image         
+- /delete-user-image
   - request : receives a User ID and an Image ID
   - response: no response body needed
 
+## nomes dentro da conveção
 Obs.: Adapt the endpoints' names by following REST API URI naming conventions
 
 ## What should be delivered?

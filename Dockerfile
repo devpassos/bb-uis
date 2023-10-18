@@ -17,4 +17,4 @@ EXPOSE 9192
 #ENV KEY Value
 
 # Executando aplicação ao inicializar o container
-CMD [ "python", "app.py" ]
+CMD [ "gunicorn", "main:app", "-w", "4", "-k", "uvicorn.workers.UvicornWorker" ]
