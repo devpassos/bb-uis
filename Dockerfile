@@ -10,8 +10,11 @@ COPY ./ ./
 # Instalação dos pacotes requeridos
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Exponto portas para conexão Web
+EXPOSE 9192
+
 # Definição de variáveis de ambiente necessárias
 #ENV KEY Value
 
 # Executando aplicação ao inicializar o container
-CMD [ "uvicorn", "main:app" ]
+CMD [ "python", "app.py" ]
