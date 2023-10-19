@@ -1,8 +1,4 @@
 import base64
-import os
-from  pathlib import Path
-
-
 
 def image_to_base64(image_path):
     try:
@@ -23,12 +19,3 @@ if not base64_data.startswith("Erro"):
     print(base64_data)
 else:
     print(base64_data)
-
-def cria_verifica_db() -> None:
-    db_path =  '' 
-    
-    if not os.path.exists(db_path):
-        from utils_db import create_tables
-        create_tables()
-    
-        

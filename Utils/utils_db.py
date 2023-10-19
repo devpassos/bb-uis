@@ -2,14 +2,13 @@ import sqlalchemy as sa
 from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy.ext import declarative
 from sqlalchemy.future.engine import Engine
-
 from typing import Optional
 from pathlib import Path
 
 
 ModelBase = declarative.declarative_base()
 
-__engine = Optional [Engine] = None
+__engine = Optional [Engine]
 
 def create_engine() -> Engine:
     """Função que configura a conexão com o banco de dados

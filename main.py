@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from typing import Optional, List
 from routes import route_raiz, route_users, route_users_images
+from Utils import utils_db as ub
 
 
 #Criando objeto FastAPI
@@ -34,7 +35,7 @@ if __name__ == "__main__":
     from Utils import util
     
     # Verifica se banco de daos existe
-    util.cria_verifica_db()
+    ub.create_tables()
     
     # Inicializando a aplicação
     uvicorn.run("main:app", host="0.0.0.0", port=9192, log_level="info", reload=True)

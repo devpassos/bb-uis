@@ -11,7 +11,7 @@ def test_response_root():
     Return: Deve retornar o teste feito com sucesso
     """
     
-    response = client.get('/api/v1')
+    response = client.get('/')
     
     assert response.status_code == 200
 
