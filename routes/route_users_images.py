@@ -1,5 +1,5 @@
 from fastapi import APIRouter, status
-from models.Imagens import Image
+from schemas.images_schema import Image
 
 # Instanciando objeto do tipo Router para gerenciamento das rotas
 router = APIRouter()

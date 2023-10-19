@@ -1,12 +1,12 @@
 import sqlalchemy as sa
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
-from sqlalchemy.ext import declarative
 from sqlalchemy.future.engine import Engine
 from typing import Optional
 from pathlib import Path
 
 
-ModelBase = declarative.declarative_base()
+ModelBase = declarative_base()
 
 __engine = Optional [Engine]
 
@@ -56,6 +56,6 @@ def create_tables() -> None:
     if not __engine:
         create_engine()
     
-    import models.Usuarios
-    ModelBase.metada.drop_all(__engine)
-    ModelBase.metada_create_all(__engine)
+    import models.users_model
+    ModelBase.metadata.drop_all(__engine)
+    ModelBase.metadata.create_all(__engine)
