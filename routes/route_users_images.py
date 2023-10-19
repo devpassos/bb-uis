@@ -1,7 +1,7 @@
 from fastapi import APIRouter, status
 from models.Imagens import Image
 
-
+# Instanciando objeto do tipo Router para gerenciamento das rotas
 router = APIRouter()
 
 
@@ -23,7 +23,7 @@ async def get_user_image(user_id: int, image_id: int):
     pass
 
 
-@router.post('/api/v1/users-images/{user_id}')
+@router.post('/api/v1/users-images/{user_id}', status_code=status.HTTP_201_CREATED)
 async def create_user_image(user_id: int, image: Image):
     """Rota que registra uma imagem vinculando-a à um ID de usuário.
     

@@ -5,7 +5,7 @@ from models.Imagens import Image
 router = APIRouter()
 
 
-@router.get('/api/v1', description="Rota raiz da API", summary="Rota raiz")
+@router.get('/', description="Rota raiz da API", summary="Rota raiz")
 async def root():
   
     return {

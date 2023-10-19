@@ -31,6 +31,10 @@ app.include_router(route_users_images.router, tags=['users-images'])
 # Verificação padrão. Caso o arquivo .py seja o principal.
 if __name__ == "__main__":
     import uvicorn
+    from Utils import util
+    
+    # Verifica se banco de daos existe
+    util.cria_verifica_db()
     
     # Inicializando a aplicação
     uvicorn.run("main:app", host="0.0.0.0", port=9192, log_level="info", reload=True)
