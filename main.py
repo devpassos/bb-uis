@@ -1,16 +1,18 @@
-from fastapi import FastAPI, HTTPException
-from typing import Optional, List
-from routes  import route_raiz
+from fastapi import FastAPI
+
+from core.configs import settings
+
+from api.api import api_router
 
 
 #Criando objeto FastAPI
 app = FastAPI(title="User Image System - API", 
-              version="0.0.2", 
+              version="0.0.5", 
               description="The User Image System - UIS is a simple API that store images of clients.")
 
 
 # ------ Rota default ---------- #
-app.include_router(route_raiz.router, tags=['default'])
+app.include_router(api_router, prefix=settings.API_V1_STR)
 
 # ------ Rotas relacionadas à usuáros ---------- #
 #app.include_router(route_users.router, tags=['users'])

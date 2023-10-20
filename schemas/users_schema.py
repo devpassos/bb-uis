@@ -6,9 +6,8 @@ class UserSchema(SCBaseModel):
 
     """
     
-    id: Optional [int]  # id do usuário
-    nome: str           # nome do usuário
+    id: Optional[int]  # id do usuário
+    nome: str          # nome do usuário
 
-    def __repr__(self) -> str:
-        return f'id: {self.id}\n nome: {self.nome}'
-    
+    class Config:
+        orm_mode: True

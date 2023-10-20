@@ -14,7 +14,7 @@ from core.configs import settings
 router = APIRouter()
 
 
-@router.post(settings.API_V1_STR + '/users', status_code=status.HTTP_201_CREATED, response_model=UserSchema)
+@router.post('', status_code=status.HTTP_201_CREATED)
 async def create_user(user: UserSchema, db: AsyncSession = Depends(get_session)):
     """Rota que cadastra um novo usuário.
     
@@ -27,8 +27,8 @@ async def create_user(user: UserSchema, db: AsyncSession = Depends(get_session))
         user -- Recebe um Json contendo o nome de usuário como argumento
         Return: Novo ID de usuário cadastrado
     """
-    
-    new_user = UserModel(nome= user.nome)
+        
+    new_user = UserModel(nome = user.nome)
 
     db.add(new_user)
     await db.commit()
@@ -36,7 +36,7 @@ async def create_user(user: UserSchema, db: AsyncSession = Depends(get_session))
     return new_user.id
 
 
-@router.put(settings.API_V1_STR + '/users/{user_id}', status_code=status.HTTP_201_CREATED, response_model=UserSchema)
+@router.put('/{user_id}', status_code=status.HTTP_201_CREATED)
 async def update_user(user_id: int, user: UserSchema, db: AsyncSession = Depends(get_session)):
     """Rota que atualiza um usuário já cadastrado.
 
@@ -50,4 +50,18 @@ async def update_user(user_id: int, user: UserSchema, db: AsyncSession = Depends
     Return: Retorna o ID do usuário que foi atualizado.
     """
     
-    pass
+    async with db as session:
+        query = select(UserModel).filter(UserModel.id == user_id)
+        result = await session.execute(query)
+        user_update =  result.scalar_one_or_none()
+
+        if user_update:
+            user_update.nome = user.nome
+            
+            await session.commit()
+
+            return user_update.id
+        
+        else:
+            raise HTTPException(detail='Usuário não encontrada.',
+                                status_code=status.HTTP_404_NOT_FOUND)

@@ -1,4 +1,3 @@
-import sqlalchemy as sa
 import sqlalchemy.orm as orm
 from core.configs import settings
 from models.users_model import UserModel
@@ -15,7 +14,4 @@ class ImageModel(settings.DB_BASE_MODEL):
     b64image: str = Column(Text, nullable=False)                     # imagem em formato base 64
     
     user_id: int = Column(Integer, ForeignKey('users.id'))           # chave da tebela de usuários
-    user: UserModel = orm.relationship('User', lazy='joined')        # join com a tabela de usuários
-
-    def __repr__(self) -> str:
-        return f'id: {self.id} \nb64image: {self.b64image}'
+    user: UserModel = orm.relationship('UserModel', lazy='joined')   # join com a tabela de usuários

@@ -2,7 +2,7 @@ import os
 
 from typing import List
 from pydantic import AnyHttpUrl
-from pydantic_settings import BaseSettings
+from pydantic import BaseSettings
 from sqlalchemy.ext.declarative import declarative_base
 
 

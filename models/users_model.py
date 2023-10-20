@@ -12,8 +12,8 @@ class UserModel(settings.DB_BASE_MODEL):
     __tablename__: str = "users"
     
     id: int = Column(Integer, primary_key=True, autoincrement=True)   # id do usuário
-    nome: str = Column(String(50), nullable=False)                    # nome do usuário
+    nome: str = Column(String(50))                    # nome do usuário
 
-    def __repr__(self) -> str:
-        return f'id: {self.id}\n nome: {self.nome}'
+    #def __repr__(self) -> str:
+    #    return f'id: {self.id}\n nome: {self.nome}'
     
