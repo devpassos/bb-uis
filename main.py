@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from typing import Optional, List
-from api.v1.endpoints import root
+from routes  import route_raiz
 
 
 #Criando objeto FastAPI
@@ -13,11 +13,11 @@ app = FastAPI(title="User Image System - API",
 app.include_router(route_raiz.router, tags=['default'])
 
 # ------ Rotas relacionadas à usuáros ---------- #
-app.include_router(route_users.router, tags=['users'])
+#app.include_router(route_users.router, tags=['users'])
 
 
 # ------ Rotas relacionadas à usuários x imagens ---------- #
-app.include_router(route_users_images.router, tags=['users-images'])
+#app.include_router(route_users_images.router, tags=['users-images'])
 
 
 # Verificação padrão. Caso o arquivo .py seja o principal.
