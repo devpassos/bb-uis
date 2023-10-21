@@ -1,6 +1,0 @@
-1 - Configurar o dockerfile / docker compose (Subir o container de NGNx / Python / Banco de daddos)
-2 - Definir diagrama de banco de dados
-3 - Definir o diagrama da arquitetura do sistema
-4 - Python assíncrono revisão - ok
-5 - Criar as FastAPI Endpoints  - ok
-6 - Criar testes unitários para a aplicação - ok

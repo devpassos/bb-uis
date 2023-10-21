@@ -1,0 +1,23 @@
+version: '3.5'
+
+services:
+  
+  # Nome do serviço a ser criado
+  web-api:
+    # Nome da Imagem
+    image: bbts-uis
+    
+    # Parâmetros para build da aplicação
+    build: 
+      context: .
+      dockerfile: app/Dockerfile
+    
+    working_dir: /app 
+    
+    # Porta padrão do Gunicorn (esse parâmetro não funciona para rede Host)
+    ports:
+      - "8000:8000"
+    
+    # Esse parâmetro é específico para o docker rodando no WSL.
+    # Em caso de probleas, deve ser alterado para modo bridge.
+    network_mode: host

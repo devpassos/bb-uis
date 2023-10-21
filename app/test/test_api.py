@@ -1,12 +1,26 @@
 from fastapi import status
 from core.configs import settings
 from fastapi.testclient import TestClient
+from criar_tabelas import create_tables
 from main import app
 
 # Intanciando um objeto do tipo TesteClient
 client = TestClient(app)
 
 PREFIX = settings.API_V1_STR
+
+
+def test_cria_banco():
+    import asyncio
+    
+    try:
+        asyncio.run(create_tables())
+        
+        assert True
+    
+    except Exception as error:
+        error('Erro ao criar banco')
+        assert False
 
 
 def test_response_root():
