@@ -6,14 +6,13 @@ greenlet==1.1.2
 h11==0.13.0
 idna==3.3
 pydantic==1.9.0
-#pydantic_core
-#pydantic-settings
 sniffio==1.2.0
 starlette==0.17.1
 typing_extensions==4.2.0
 uvicorn==0.17.6
 gunicorn==21.2.0
 requests==2.31.0
+Pillow==10.1.0
 
 # DB
 SQLAlchemy==1.4.36

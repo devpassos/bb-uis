@@ -1,21 +1,21 @@
 from typing import List
 
 from fastapi import APIRouter, status, Depends, HTTPException, Response
+from fastapi.responses import JSONResponse
 
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 from models.images_model import ImageModel
-from schemas.images_schema import ImageSchema
+from schemas.images_schema import GetImageSchema, CreateImageSchema, UpdateImageSchema, DeleteImageSchema
 
 from core.deps import get_session
-from core.configs import settings
 
 
 router = APIRouter()
 
-@router.get('/{user_id}/images/{image_id}')
-async def get_user_image(user_id: int, image_id: int, db: AsyncSession = Depends(get_session)):
+@router.get('', status_code=status.HTTP_200_OK)
+async def get_user_image(image: GetImageSchema, db: AsyncSession = Depends(get_session)):
     """Rota que busca uma imagem relacioada à um usuário
     
     Corresponde à seção dos requisitos:
@@ -28,22 +28,23 @@ async def get_user_image(user_id: int, image_id: int, db: AsyncSession = Depends
     image_id -- ID da imagem.
     Return: Retorna a representação em base64 da imagem requisitada.
     """
-    async with db as session:
-        query = select(ImageModel).filter(ImageModel.user_id == user_id).filter(ImageModel.id == image_id)
-        result = await session.execute(query)
-        image =  result.scalar_one_or_none()
+    try:
+        async with db as session:
+            query = select(ImageModel).filter(ImageModel.user_id == image.user_id).filter(ImageModel.id == image.image_id)
+            result = await session.execute(query)
+            get_image =  result.scalar_one_or_none()
 
-        if image:
-            return image.b64image
-        else:
-            raise HTTPException(detail='Imagem não encontrada.',
-                                status_code=status.HTTP_404_NOT_FOUND)
+            if get_image:
+                return get_image.b64image
+                    
+        return Response(status_code=status.HTTP_404_NOT_FOUND)
 
-    
+    except HTTPException as error:
+        error(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-@router.post('/{user_id}', status_code=status.HTTP_201_CREATED)
-async def create_user_image(user_id: int, image: ImageSchema, db: AsyncSession = Depends(get_session)):
+@router.post('', status_code=status.HTTP_201_CREATED)
+async def create_user_image(image: CreateImageSchema, db: AsyncSession = Depends(get_session)):
     """Rota que registra uma imagem vinculando-a à um ID de usuário.
     
     Corresponde à sessão de requisitos:
@@ -57,17 +58,20 @@ async def create_user_image(user_id: int, image: ImageSchema, db: AsyncSession =
     image   -- Json com a representação da imagem em base 64  
     Return: retorna o ID da imagem cadastrada.
     """
+    try:
+        new_user_image = ImageModel(user_id= image.user_id, b64image = image.b64image)
+
+        db.add(new_user_image)
+        await db.commit()
+
+        return new_user_image.id
     
-    new_user_image = ImageModel(user_id= user_id, b64image = image.b64image)
-
-    db.add(new_user_image)
-    await db.commit()
-
-    return new_user_image.id
+    except HTTPException as error:
+        error(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-@router.put('/{user_id}/images/{image_id}', status_code=status.HTTP_204_NO_CONTENT)
-async def update_user_image(user_id: int, image_id: int, image: ImageSchema, db: AsyncSession = Depends(get_session)):
+@router.put('')
+async def update_user_image(image: UpdateImageSchema, db: AsyncSession = Depends(get_session)):
     """Rota que atualiza uma imagem já cadastrada anteriormente.
     
     Corresponde à sessão de requisitos:
@@ -81,28 +85,28 @@ async def update_user_image(user_id: int, image_id: int, image: ImageSchema, db:
     image    -- Json com a representação da imagem em base 64. 
     Return: sem retorno.
     """
-    
-    async with db as session:
-        query = select(ImageModel).filter(ImageModel.user_id == user_id).filter(ImageModel.id == image_id)
-        result = await session.execute(query)
-        image_update =  result.scalar_one_or_none()
+    try:
+        async with db as session:
+            query = select(ImageModel).filter(ImageModel.user_id == image.user_id).filter(ImageModel.id == image.image_id)
+            result = await session.execute(query)
+            image_update =  result.scalar_one_or_none()
 
-        if image_update:
-            image_update.b64image = image.b64image
+            if image_update:
+                image_update.b64image = image.b64image
+                
+                await session.commit()
+ 
+                return Response(status_code=status.HTTP_204_NO_CONTENT)
             
-            await session.commit()
-
-            return Response(status_code=status.HTTP_204_NO_CONTENT)
+        return Response(status_code=status.HTTP_404_NOT_FOUND)  
         
-        else:
-            raise HTTPException(detail='Imagem não encontrada.',
-                                status_code=status.HTTP_404_NOT_FOUND)
+    except HTTPException as error:
+        error(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 
-
-@router.delete('/{user_id}/images/{image_id}', status_code=status.HTTP_204_NO_CONTENT)
-async def delete_user_image(user_id: int, image_id: int, db: AsyncSession = Depends(get_session)) :
+@router.delete('')
+async def delete_user_image(user_image: DeleteImageSchema, db: AsyncSession = Depends(get_session)) :
     """Rota que deleta uma imagem relacionada à um usuário cadastrado.
     
     Corresponde à sessão de requisitos:
@@ -112,21 +116,23 @@ async def delete_user_image(user_id: int, image_id: int, db: AsyncSession = Depe
 
     Keyword arguments:
     user_id  -- ID de usuário.
-    image_id -- ID da imagem.    Return: return_description
+    image_id -- ID da imagem.
     Return: Sem retorno.
     """
-    async with db as session:
-        query = select(ImageModel).filter(ImageModel.user_id == user_id).filter(ImageModel.id == image_id)
-        result = await session.execute(query)
-        image_delete =  result.scalar_one_or_none()
+    try:
+        async with db as session:
+            query = select(ImageModel).filter(ImageModel.user_id == user_image.user_id).filter(ImageModel.id == user_image.image_id)
+            result = await session.execute(query)
+            image_delete =  result.scalar_one_or_none()
 
-        if image_delete:
-            await session.delete(image_delete)
+            if image_delete:
+                await session.delete(image_delete)
+                
+                await session.commit()
+
+                return Response(status_code=status.HTTP_204_NO_CONTENT)
             
-            await session.commit()
-
-            return Response(status_code=status.HTTP_204_NO_CONTENT)
-        
-        else:
-            raise HTTPException(detail='Imagem não encontrada.',
-                                status_code=status.HTTP_404_NOT_FOUND)
+            return Response(status_code=status.HTTP_404_NOT_FOUND)
+                                    
+    except HTTPException as error:
+        error(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)

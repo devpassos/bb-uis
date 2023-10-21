@@ -1,5 +1,5 @@
 # Imagem de referêcia pyrhon 3.11
-FROM python:3.11
+FROM python:3.9
 
 # Diretório padrão de trabalho
 WORKDIR /app

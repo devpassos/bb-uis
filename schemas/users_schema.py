@@ -1,13 +1,22 @@
 from typing import Optional
 from pydantic import BaseModel as SCBaseModel
 
-class UserSchema(SCBaseModel):
+class CreateUserSchema(SCBaseModel):
     """Classe voltada para represnetar o schema de registro de um usuário.
 
     """
+    nome: str  # nome do usuário
+
+    class Config:
+        orm_mode: True
+        
+class UpdateUserSchema(SCBaseModel):
+    """Classe que modela o schema de atualização de um usuário.
+
+    """
     
-    id: Optional[int]  # id do usuário
-    nome: str          # nome do usuário
+    user_id: int  # id do usuário
+    nome: str     # nome do usuário
 
     class Config:
         orm_mode: True

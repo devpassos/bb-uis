@@ -6,17 +6,18 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 from models.images_model import ImageModel
-from schemas.images_schema import ImageSchema
+from schemas.images_schema import GetImagesThumbsSchema
 
 from core.deps import get_session
 from core.configs import settings
+from core.util import base64_image_resize
 
 
 router = APIRouter()
 
 
-router.get('/{user_id}')
-async def read_users_images_thumb(user_id: int, db: AsyncSession= Depends(get_session)):
+@router.get('', status_code=status.HTTP_200_OK)
+async def read_users_images_thumb(get_thumb: GetImagesThumbsSchema, db: AsyncSession= Depends(get_session)):
     """Rota que lista todas as imagens relacionadas à um usuário.
     
     Corresponde à sessão de requisitos:
@@ -29,12 +30,27 @@ async def read_users_images_thumb(user_id: int, db: AsyncSession= Depends(get_se
     Return: Retorna uma lista de representações em base64 das imagens dos usuários limitando o tamanho da representação em 100x100, mantidas as proporções.
     """
     async with db as session:
-        query = select(ImageModel).filter(ImageModel.user_id == user_id)
-        result = await session.execute(query)
-        images: List[ImageModel] =  result.scalars().all()
+        list_resized_images: List[str] = []
+        
+        try:
+            query = select(ImageModel).filter(ImageModel.user_id == get_thumb.user_id)
+            result = await session.execute(query)
+            images: List[ImageModel] =  result.scalars().all()
+            
+            if images:
+                for img in images:
+                    # redimensionando as imagens do dos usuários:
+                    base64_string = img.b64image
+                    base64_resized_string = base64_image_resize(base64_string)
 
-        if images:
-            return images
-        else:
-            raise HTTPException(detail='Nenhuma imagem encontrada para este usuário.',
-                                status_code=status.HTTP_404_NOT_FOUND)
+                    if  not base64_resized_string.startswith("Erro"):
+                        list_resized_images.append(base64_resized_string)
+                    else:
+                        continue
+
+                return list_resized_images
+            
+            return Response(status_code=status.HTTP_404_NOT_FOUND)
+            
+        except HTTPException as error:
+                error(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
