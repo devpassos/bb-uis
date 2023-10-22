@@ -9,7 +9,7 @@ The User Image System - UIS is a simple CRUD that recieves clients names and ima
 
 ## Testes
 - O framework de testes utilizado foi o pytest.
-- Certifique-se de ter o pytest instalado e na pasta app executar:
+- Certifique-se de ter o pytest instalado e na pasta `app` executar:
   ```
   python -m pytest
   ```
