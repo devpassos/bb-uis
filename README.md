@@ -21,7 +21,7 @@ The User Image System - UIS is a simple CRUD that recieves clients names and ima
    ![pytest_exemple](https://github.com/devpassos/bb-uis/assets/45983543/0ea19e6c-6e61-4de2-b7d8-f94f97d2e906)
 
 
-## Diagras
+## Diagrams
 ### Application Diagram:
   <img width="734" alt="Application Diagram" src="https://github.com/devpassos/bb-uis/assets/45983543/66fcc838-751f-48de-9039-e60b32d15184">
 
