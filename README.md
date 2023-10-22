@@ -29,6 +29,7 @@ The User Image System - UIS is a simple CRUD that recieves clients names and ima
   ![Modelo ER - UIS](https://github.com/devpassos/bb-uis/assets/45983543/3825b8f9-061b-4c4e-b113-aabb97f387c7)
 
 ## Estrutura do projeto
+```
 ├── app -> Pasta Raiz da aplicação. É o conteúdo que é copiado para o container docker
 │   
 │   ├── api -> Arquivos 
@@ -71,3 +72,4 @@ The User Image System - UIS is a simple CRUD that recieves clients names and ima
 │   ├── Modelo ER - UIS.pdf
 │   └── Modelo ER - UIS.png
 ├── Docker-compose.yml
+```
