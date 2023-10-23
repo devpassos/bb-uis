@@ -20,11 +20,11 @@ The User Image System - UIS is a simple CRUD that recieves clients names and ima
 - Veja um exemplo da saída abaixo:
    ![pytest_exemple](https://github.com/devpassos/bb-uis/assets/45983543/0ea19e6c-6e61-4de2-b7d8-f94f97d2e906)
 
-## Arquittura
+## Arquitura
 - Como se trata de um crud simples, não foi adotada uma arquiterura com banco de dados separado e nem um proxy para receber as conexões.
   Deste modo, temos apenas um container Docker com a FastAPI e o Guvicorn servindo os clientes na porta padrão http:8000.
   
-## Diagrams
+## Diagramas
 ### Application Diagram:
   <img width="734" alt="Application Diagram" src="https://github.com/devpassos/bb-uis/assets/45983543/66fcc838-751f-48de-9039-e60b32d15184">
 
